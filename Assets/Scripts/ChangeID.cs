@@ -30,7 +30,7 @@ public class ChangeID : MonoBehaviour
         Debug.Log(timeToSwitch);
     }
 
-
+     
     void renderingMaterial()
     {
         //getiing the renderer component in order to use the materials
