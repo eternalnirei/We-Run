@@ -8,7 +8,7 @@ public class DestroyCube : MonoBehaviour
     IEnumerator Start()
     {
         yield return new WaitForSeconds(10f);
-        Destroy(gameObject);
+        gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 10, ForceMode.VelocityChange);
     }
 
    
