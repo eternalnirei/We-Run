@@ -7,14 +7,24 @@ public class ChangeID : MonoBehaviour
     public Material calm;
     public Material excited;
     public Material psychotic;
-    public enum states {Calm, Excited, Psychotic};
+
+    public enum IdentityState {Two, Dash, See, Blue, Make};
+    IdentityState currentIdentity = IdentityState.Blue;
+
     float timeToSwitch;
+    float transitionDuration;
     int randSwitch;
+
+    //Event Manager
+    public delegate void ChangeIdentity(IdentityState nextIdentity);
+    public static event ChangeIdentity OnIdentityBegin;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        timeToSwitch = 3;
+        timeToSwitch = 10;
+        transitionDuration = 2;
     }
 
     // Update is called once per frame
@@ -27,7 +37,7 @@ public class ChangeID : MonoBehaviour
             renderingMaterial();
         }
         timeToSwitch -= Time.deltaTime;
-        Debug.Log(timeToSwitch);
+        //Debug.Log(timeToSwitch);
     }
 
      
@@ -35,21 +45,29 @@ public class ChangeID : MonoBehaviour
     {
         //getiing the renderer component in order to use the materials
         Renderer rend = GetComponent<Renderer>();
-        randSwitch = Random.Range(0, 3);
+        randSwitch = Random.Range(0, 5);
         switch (randSwitch)
         {
             case 0:
-                rend.material = calm;
+                currentIdentity = IdentityState.Two;
+                
                 break;
             case 1:
-                rend.material = excited;
+                currentIdentity = IdentityState.Dash;
                 break;
             case 2:
-                rend.material = psychotic;
+                currentIdentity = IdentityState.See;
+                break;
+            case 3:
+                currentIdentity = IdentityState.Blue;
+                break;
+            case 4:
+                currentIdentity = IdentityState.Make;
                 break;
         }
+        OnIdentityBegin(currentIdentity);
+        Debug.Log(currentIdentity);
         //resetting timer
-        timeToSwitch = 3;
+        timeToSwitch = Random.Range(3,6);
     }
 }
-//Hello Thaleia, this is Sara, if you are reading this, it means it works.
