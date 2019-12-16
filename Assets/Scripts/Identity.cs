@@ -4,15 +4,29 @@ using UnityEngine;
 
 public class Identity : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+   
+    string name;
+    KeyCode[] baseControls;
+    int chance, dominance;
+    //LightMode lightmode;
+    //MusicMode musicmode;
+    
+    public void Replace()
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public void FadeOut()
     {
-        
+
     }
+
+    public void OverrideBaseControls()
+    {
+
+    }
+
+
+
+
 }

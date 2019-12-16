@@ -4,35 +4,45 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
     void Start()
     {
-        ChangeID.OnIdentityBegin += MusicFade;
+        GameManager.OnTransitionExit += MusicFadeIn;
+        GameManager.OnTransitionEnter += MusicFadeOut;
     }
 
-    // Update is called once per frame
-    void Update()
+   
+
+    void MusicFadeOut(GameManager.IdentityState state)
     {
-        
+       
     }
 
-    void MusicFade(ChangeID.IdentityState state)
+    void MusicFadeIn(GameManager.IdentityState state)
     {
         switch (state)
         {
-            case ChangeID.IdentityState.Two:
+            case GameManager.IdentityState.Two:
                 Debug.Log("State is Two");
                 break;
-            case ChangeID.IdentityState.Dash:
+            case GameManager.IdentityState.Dash:
                 Debug.Log("State is: " + state);
                 break;
+            case GameManager.IdentityState.See:
+                Debug.Log("State is: " + state);
+                break;
+            case GameManager.IdentityState.Blue:
+                Debug.Log("State is: " + state);
+                break;
+            case GameManager.IdentityState.Make:
+                Debug.Log("State is: " + state);
+                break;
+
+
         }
-        
 
-        
-        //MusicFadeOut w
+
     }
-
 
 
 }
