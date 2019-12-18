@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
 
     //This is the Game State! This is the most important variable in the entire game
-    public enum IdentityState { Two, Dash, See, Blue, Make }
+    public enum IdentityState { Two, Dash, See, Blue, Make, Transition }
 
     private IdentityState currentIdentity;
     public IdentityState CurrentIdentity
@@ -27,17 +28,10 @@ public class GameManager : MonoBehaviour
     float transitionDuration = 2;
     bool isInTransition;
 
-    
-    public Material calm;
-    public Material excited;
-    public Material psychotic;
+    //GUIElements - Debug only
+    GUIStyle guiStyle = new GUIStyle();
+   
 
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
 
     // Update is called once per frame
     void Update()
@@ -69,9 +63,10 @@ public class GameManager : MonoBehaviour
 
     void TransitionBegin()
     {
-
+        
         //Event OnTransition Enter is broadcasted.
         OnTransitionEnter(CurrentIdentity);
+        currentIdentity = IdentityState.Transition;
     }
 
 
@@ -104,4 +99,11 @@ public class GameManager : MonoBehaviour
         
         
     }
+
+    private void OnGUI()
+    {
+        guiStyle.fontSize = 40;
+        GUI.Label(new Rect(20, 20, 500, 80), currentIdentity.ToString(), guiStyle);
+    }
+
 }

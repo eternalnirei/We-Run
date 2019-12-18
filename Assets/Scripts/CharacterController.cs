@@ -20,7 +20,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
         Identity blue;
         Identity make;
 
+        Identity currentIdentity;
 
+        int numberOfJumps = 0;
+        int maxNumberOfJumps = 1;
 
         [Serializable]
         public class MovementSettings
@@ -175,9 +178,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 }
             }
 
-            if (m_IsGrounded)
+            if (m_IsGrounded || numberOfJumps < maxNumberOfJumps)
             {
-                m_RigidBody.drag = 5f;
+                //this line is actually what slows the character down, good to know
+                if (numberOfJumps == 0) m_RigidBody.drag = 5f;
 
                 if (m_Jump)
                 {
@@ -185,6 +189,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
                     m_RigidBody.velocity = new Vector3(m_RigidBody.velocity.x, 0f, m_RigidBody.velocity.z);
                     m_RigidBody.AddForce(new Vector3(0f, movementSettings.JumpForce, 0f), ForceMode.Impulse);
                     m_Jumping = true;
+                    //doubleJump
+                    numberOfJumps++;
+
                 }
 
                 if (!m_Jumping && Mathf.Abs(input.x) < float.Epsilon && Mathf.Abs(input.y) < float.Epsilon && m_RigidBody.velocity.magnitude < 1f)
@@ -276,6 +283,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
             if (!m_PreviouslyGrounded && m_IsGrounded && m_Jumping)
             {
                 m_Jumping = false;
+                
+                //resetting double jump variable
+                numberOfJumps = 0;
             }
         }
 
@@ -286,8 +296,16 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         void TransitionExit(GameManager.IdentityState state)
         {
-
+            if (state == GameManager.IdentityState.Two)
+            {
+                currentIdentity = two;
+                maxNumberOfJumps = 2;
+            }
+            else maxNumberOfJumps = 1;
         }
+
+       
+
 
     }
 }
