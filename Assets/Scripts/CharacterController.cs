@@ -137,7 +137,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void Start()
         {
-            GameManager.OnTransitionEnter += TransitionEnter;
+            GameManager.OnTransitionEnter += TransitionEnter; // 
             GameManager.OnTransitionExit += TransitionExit;
 
             m_RigidBody = GetComponent<Rigidbody>();
@@ -235,11 +235,36 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private Vector2 GetInput()
         {
+            float tempX;
+            float tempY;
+
+            if (Input.GetKey(KeyCode.W))
+            {
+                tempY = 1;
+            }
+            else
+            if (Input.GetKey(KeyCode.S))
+            {
+                tempY = -1;
+            }
+            else { tempY = 0; }
+            if (Input.GetKey(KeyCode.A))
+            {
+                tempX = -1;
+            }
+            else
+            if (Input.GetKey(KeyCode.D))
+            {
+                tempX = 1;
+            }
+            else { tempX = 0; }
 
             Vector2 input = new Vector2
             {
-                x = CrossPlatformInputManager.GetAxis("Horizontal"),
-                y = CrossPlatformInputManager.GetAxis("Vertical")
+                x = tempX,
+                y = tempY
+                //x = CrossPlatformInputManager.GetAxis("Horizontal"),
+                //y = CrossPlatformInputManager.GetAxis("Vertical")
             };
             movementSettings.UpdateDesiredTargetSpeed(input);
             return input;
