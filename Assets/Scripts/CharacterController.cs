@@ -14,13 +14,13 @@ namespace UnityStandardAssets.Characters.FirstPerson
         int lives;
         string goal;
 
-        Identity surge = new Identity();
-        Identity two = new Identity();
-        Identity there = new Identity();
-        Identity blue = new Identity();
-        Identity make = new Identity();
+        Identity.IdentityValues surge = Identity.Surge;
+        Identity.IdentityValues two = Identity.Two;
+        Identity.IdentityValues there = Identity.There;
+        Identity.IdentityValues blue = Identity.Blue;
+        Identity.IdentityValues make = Identity.Make;
 
-        Identity currentIdentity;
+        Identity.IdentityValues currentIdentity;
 
         int numberOfJumps = 0;
         int maxNumberOfJumps = 1;

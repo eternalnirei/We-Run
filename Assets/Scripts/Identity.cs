@@ -4,25 +4,16 @@ using UnityEngine;
 
 public class Identity : MonoBehaviour
 {
-    //public class IdentityProperties
-    //{
-        //SETTING UP GETTERS AND SETTERS FOR THE IDENTITIES' FIELDS
-        /*string name;
-        public string Name
-        {
-            get
-            {
-                return this.name;
-            }
-            set
-            {
-                this.name = value;
-            }
-        }*/
+    //SETTING UP GETTERS AND SETTERS FOR THE IDENTITIES' FIELDS
+    public class IdentityValues
+    {
         //THE DEFAULT MOVEMENT IN ALL IDENTITIES IS: FORWARD, LEFT, BACKWARD, RIGHT, JUMP
-        public KeyCode[] BaseControls { get; set; } //WHAT ARE EACH IDENTITIES' CONTROLS?
 
-        int chance; //WHAT IS THE CHANCE OF EACH CHARACTER BE THE ONE THAT IS TRIGGERED?
+        //WHAT ARE EACH IDENTITIES' CONTROLS?
+        public KeyCode[] BaseControls { get; set; }
+
+        //WHAT IS THE CHANCE OF EACH CHARACTER BE THE ONE THAT IS TRIGGERED?
+        int chance;
         public int Chance
         {
             get
@@ -35,7 +26,8 @@ public class Identity : MonoBehaviour
             }
         }
 
-        int dominance; //HOW DOMINANT IS THE CHARACTER 
+        //HOW DOMINANT IS THE CHARACTER? 
+        int dominance;
         public int Dominance
         {
             get
@@ -47,60 +39,50 @@ public class Identity : MonoBehaviour
                 this.dominance = value;
             }
         }
-    //LightMode lightmode; ENUM?
-    //MusicMode musicmode; ENUM?
-    //}
-
-    public Identity Blue = new Identity();
+        //LightMode lightmode; ENUM?
+        //MusicMode musicmode; ENUM?
+        //maybe put the jumpforce in here and not in CharacterController
+    }
 
     //SETTING THE VALUES OF THE IDENTITIES OF THE CHARACTERS
-    public void IdentityProperties()
+    public static IdentityValues Surge = new IdentityValues()
     {
-        //SETTING TWO
-        //two.Name = "Two";
-        //reversed on the axis of X
-        //two.BaseControls = new KeyCode[] { KeyCode.W, KeyCode.D, KeyCode.S, KeyCode.A, KeyCode.Space };
-        //two.Chance = 20;
-        //two.Dominance = 20;
+        BaseControls = new KeyCode[] { KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.Space },
+        Chance = 20,
+        Dominance = 20
+    };
 
-        //SETTING SURGE
-        //SETTING THERE
-        //SETTING BLUE
-        //SETTING MAKE
-    }
-
-
-    public void IdentyBlue()
+    public static IdentityValues Blue = new IdentityValues()
     {
-        Identity Blue = new Identity();
-        //Blue.Name = "Blue";
-        Blue.Chance = 20;
-        Blue.Dominance = 20;
-        Blue.BaseControls = new KeyCode[] { KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.Space };
-    }
+        //THE NORMAL CONTROLS
+        Chance = 20,
+        Dominance = 20,
+        BaseControls = new KeyCode[] { KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.Space }
+    };
 
-    static public void IdentityTwo()
+    public static IdentityValues Two = new IdentityValues()
     {
-        Identity Two = new Identity();
-        Two.Chance = 20;
-        Two.Dominance = 20;
-        Two.BaseControls = new KeyCode[] { KeyCode.W, KeyCode.D, KeyCode.S, KeyCode.A, KeyCode.Space };
-    }
+        //THE CONTROLS ON THE X AXIS ARE REVERSED
+        Chance = 20,
+        Dominance = 20,
+        BaseControls = new KeyCode[] { KeyCode.W, KeyCode.D, KeyCode.S, KeyCode.A, KeyCode.Space }
+    };
 
-    public void IdentitySurge()
+    public static IdentityValues There = new IdentityValues()
     {
+        //THE CONTROLS ON THE X AXIS ARE REVERSED
+        Chance = 20,
+        Dominance = 20,
+        BaseControls = new KeyCode[] { KeyCode.W, KeyCode.D, KeyCode.S, KeyCode.A, KeyCode.Space }
+    };
 
-    }
-
-    public void IdentityThere()
+    public static IdentityValues Make = new IdentityValues()
     {
-
-    }
-
-    public void IdentityMake()
-    {
-
-    }
+        //THE CONTROLS ON THE X AXIS ARE REVERSED
+        Chance = 20,
+        Dominance = 20,
+        BaseControls = new KeyCode[] { KeyCode.W, KeyCode.D, KeyCode.S, KeyCode.A, KeyCode.Space }
+    };
 
     public void Replace()
     {
