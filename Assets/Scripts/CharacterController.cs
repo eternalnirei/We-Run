@@ -11,6 +11,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
     [RequireComponent(typeof(CapsuleCollider))]
     public class CharacterController : MonoBehaviour
     {
+        //variables of the WeRun Team
+
         int lives;
         string goal;
 
@@ -21,6 +23,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         Identity make;
 
         Identity currentIdentity;
+        KeyCode[] currentInput = { KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.Space, KeyCode.E };
 
         int numberOfJumps = 0;
         int maxNumberOfJumps = 1;
@@ -150,7 +153,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             RotateView();
 
-            if (CrossPlatformInputManager.GetButtonDown("Jump") && !m_Jump)
+            if (Input.GetKeyDown(currentInput[4]) && !m_Jump)
             {
                 m_Jump = true;
             }
@@ -238,22 +241,22 @@ namespace UnityStandardAssets.Characters.FirstPerson
             float tempX;
             float tempY;
 
-            if (Input.GetKey(KeyCode.W))
+            if (Input.GetKey(currentInput[0]))
             {
                 tempY = 1;
             }
             else
-            if (Input.GetKey(KeyCode.S))
+            if (Input.GetKey(currentInput[2]))
             {
                 tempY = -1;
             }
             else { tempY = 0; }
-            if (Input.GetKey(KeyCode.A))
+            if (Input.GetKey(currentInput[1]))
             {
                 tempX = -1;
             }
             else
-            if (Input.GetKey(KeyCode.D))
+            if (Input.GetKey(currentInput[3]))
             {
                 tempX = 1;
             }
