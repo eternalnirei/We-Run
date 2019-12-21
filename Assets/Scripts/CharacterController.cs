@@ -14,11 +14,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
         int lives;
         string goal;
 
-        Identity dash;
-        Identity two;
-        Identity see;
-        Identity blue;
-        Identity make;
+        Identity surge = new Identity();
+        Identity two = new Identity();
+        Identity there = new Identity();
+        Identity blue = new Identity();
+        Identity make = new Identity();
 
         Identity currentIdentity;
 
@@ -313,6 +313,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 numberOfJumps = 0;
             }
         }
+
 
         void TransitionEnter(GameManager.IdentityState state)
         {
