@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     
 
     //This is the Game State! This is the most important variable in the entire game
-    public enum IdentityState { Blue = 0, Two  = 1, There = 3, Transition = 4}
+    public enum IdentityState { Blue = 0, Two  = 1, There = 2, Transition = 3}
     [SerializeField] IdentityState startIdentity;
     private IdentityState currentIdentity;
     public IdentityState CurrentIdentity

@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(SphereCollider))]
 public class Trigger : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameManager.IdentityState identityToTrigger;
+    
+
+    private void OnTriggerEnter(Collider other)
     {
-        
+        if(other.GetComponent<GameManager>() != null)
+        {
+            other.GetComponent<GameManager>().SendMessage("TriggerIdentity", (int)identityToTrigger, SendMessageOptions.RequireReceiver);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }
