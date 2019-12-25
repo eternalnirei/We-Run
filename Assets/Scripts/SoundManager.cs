@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    
+    private GameManager.IdentityState currentIdentity;
+
+
     void Start()
     {
         GameManager.OnTransitionExit += MyFunction;
@@ -20,26 +22,10 @@ public class SoundManager : MonoBehaviour
 
     void MyFunction(GameManager.IdentityState state)
     {
-        switch (state)
-        {
-            case GameManager.IdentityState.Two:
-                Debug.Log("State is: " + state);
-                break;
-            case GameManager.IdentityState.Dash:
-                Debug.Log("State is: " + state);
-                break;
-            case GameManager.IdentityState.See:
-                Debug.Log("State is: " + state);
-                break;
-            case GameManager.IdentityState.Blue:
-                Debug.Log("State is: " + state);
-                break;
-            case GameManager.IdentityState.Make:
-                Debug.Log("State is: " + state);
-                break;
 
+        currentIdentity = state;
+        Debug.Log("State is: " + state);
 
-        }
 
 
     }

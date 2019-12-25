@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[RequireComponent(typeof(CharacterController))]
 public class GameManager : MonoBehaviour
 {
+    
 
     //This is the Game State! This is the most important variable in the entire game
-    public enum IdentityState { Two, Dash, See, Blue, Make, Transition }
-
+    public enum IdentityState { Blue = 0, Two  = 1, There = 3, Transition = 4}
+    [SerializeField] IdentityState startIdentity;
     private IdentityState currentIdentity;
     public IdentityState CurrentIdentity
     {
         get => currentIdentity;
         private set { currentIdentity = value; }
     }
+    private IdentityState nextIdentity;
 
     //This is the Event Manager. It broadcasts possible changes to whoever in the game wants to listen to it.
     public delegate void ChangeIdentity(IdentityState nextIdentity);
@@ -23,47 +26,54 @@ public class GameManager : MonoBehaviour
 
     //These control the identity switch itself
     [SerializeField]
-    float timeToSwitch = 10;
+    float identityDuration = 30;
+
     [SerializeField]
     float transitionDuration = 2;
+
     bool isInTransition;
+
+    float timer;
 
     //GUIElements - Debug only
     GUIStyle guiStyle = new GUIStyle();
-   
 
+    private void Start()
+    {
+        currentIdentity = startIdentity;
+        OnTransitionExit(currentIdentity);
+
+    }
 
     // Update is called once per frame
     void Update()
     {
         if(!isInTransition)
         {
-            if (timeToSwitch <= 0 || Input.GetKeyDown(KeyCode.C))
+            if (timer >= identityDuration)
             {
+                nextIdentity = (IdentityState)Random.Range(0, 3);
                 TransitionBegin();
-                isInTransition = true;
-                //resetting other timer
-                transitionDuration = 2;
+                
             }
         } else
         {
-            if (transitionDuration <= 0)
+            if (timer >= transitionDuration)
             {
                 TransitionEnd();
-                isInTransition = false;
-                //resetting timer
-                timeToSwitch = Random.Range(3, 6);
+               
 
             }
         }
 
-        timeToSwitch -= Time.deltaTime;
-        transitionDuration -= Time.deltaTime;
+        timer += Time.deltaTime;
     }
 
     void TransitionBegin()
     {
-        
+        isInTransition = true;
+        //resetting other timer
+        timer = 0;
         //Event OnTransition Enter is broadcasted.
         OnTransitionEnter(CurrentIdentity);
         currentIdentity = IdentityState.Transition;
@@ -72,33 +82,30 @@ public class GameManager : MonoBehaviour
 
     void TransitionEnd()
     {
-        //getting the renderer component in order to use the materials
-        Renderer rend = GetComponent<Renderer>();
-        int randSwitch = Random.Range(0, 5);
-        switch (randSwitch)
-        {
-            case 0:
-                CurrentIdentity = IdentityState.Two; 
-                break;
-            case 1:
-                CurrentIdentity = IdentityState.Dash;
-                break;
-            case 2:
-                CurrentIdentity = IdentityState.See;
-                break;
-            case 3:
-                CurrentIdentity = IdentityState.Blue;
-                break;
-            case 4:
-                CurrentIdentity = IdentityState.Make;
-                break;
-        }
+        isInTransition = false;
+        //resetting timer
+        timer = 0;
+        //Parses int to enum
+        CurrentIdentity = (IdentityState)nextIdentity;
 
         //Event On Transition Exit is broadcasted
         OnTransitionExit(CurrentIdentity);
         
         
     }
+
+    public void TriggerIdentity(int identityToTrigger)
+    {
+        nextIdentity = (IdentityState)identityToTrigger;
+        if (!isInTransition)
+        {
+            TransitionBegin();
+        } else
+        {
+            TransitionEnd();
+        }
+    }
+
 
     private void OnGUI()
     {

@@ -9,6 +9,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 {
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(CapsuleCollider))]
+    [RequireComponent(typeof(GameManager))]
     public class CharacterController : MonoBehaviour
     {
         //variables of the WeRun Team
@@ -16,29 +17,37 @@ namespace UnityStandardAssets.Characters.FirstPerson
         int lives;
         string goal;
 
-        Identity dash;
-        Identity two;
-        Identity see;
         Identity blue;
-        Identity make;
+        Identity two;
+        Identity there;
 
         Identity currentIdentity;
+        //public GameManager.IdentityState startIdentity;
         KeyCode[] currentInput = { KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.Space, KeyCode.E };
 
         int numberOfJumps = 0;
         int maxNumberOfJumps = 1;
 
+        bool manualSwitchEnabled = false;
+       
+
         [Serializable]
         public class MovementSettings
         {
-            public float ForwardSpeed = 8.0f;   // Speed when walking forward
-            public float BackwardSpeed = 4.0f;  // Speed when walking backwards
-            public float StrafeSpeed = 4.0f;    // Speed when walking sideways
-            public float RunMultiplier = 2.0f;   // Speed when sprinting
+
+            //WeRun Variables
+            [HideInInspector] public bool walkingEnabled = true;
+
+            public float ForwardSpeed = 16.0f;   // Speed when walking forward
+            public float BackwardSpeed = 8.0f;  // Speed when walking backwards
+            public float StrafeSpeed = 8.0f;    // Speed when walking sideways
+            public float RunMultiplier = 0.5f;   // Speed when walking
             public KeyCode RunKey = KeyCode.LeftShift;
             public float JumpForce = 30f;
             public AnimationCurve SlopeCurveModifier = new AnimationCurve(new Keyframe(-90.0f, 1.0f), new Keyframe(0.0f, 1.0f), new Keyframe(90.0f, 0.0f));
-            [HideInInspector] public float CurrentTargetSpeed = 8f;
+            [HideInInspector] public float CurrentTargetSpeed = 16f;
+
+
 
 #if !MOBILE_INPUT
             private bool m_Running;
@@ -64,7 +73,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                     CurrentTargetSpeed = ForwardSpeed;
                 }
 #if !MOBILE_INPUT
-                if (Input.GetKey(RunKey))
+                if (Input.GetKey(RunKey) && walkingEnabled)
                 {
                     CurrentTargetSpeed *= RunMultiplier;
                     m_Running = true;
@@ -137,11 +146,17 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
         }
 
+        private void Awake()
+        {
+            GameManager.OnTransitionEnter += TransitionEnter; // events are registered to event Manager
+            GameManager.OnTransitionExit += TransitionExit;
+
+        }
+
 
         private void Start()
         {
-            GameManager.OnTransitionEnter += TransitionEnter; // 
-            GameManager.OnTransitionExit += TransitionExit;
+            
 
             m_RigidBody = GetComponent<Rigidbody>();
             m_Capsule = GetComponent<CapsuleCollider>();
@@ -157,6 +172,25 @@ namespace UnityStandardAssets.Characters.FirstPerson
             {
                 m_Jump = true;
             }
+
+
+
+            if (manualSwitchEnabled)
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha1))
+                {
+                    GetComponent<GameManager>().SendMessage("TriggerIdentity", 0, SendMessageOptions.RequireReceiver);
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha2))
+                {
+                    GetComponent<GameManager>().SendMessage("TriggerIdentity", 1, SendMessageOptions.RequireReceiver);
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha3))
+                {
+                    GetComponent<GameManager>().SendMessage("TriggerIdentity", 2, SendMessageOptions.RequireReceiver);
+                }
+            }
+
         }
 
 
@@ -319,17 +353,32 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         void TransitionEnter(GameManager.IdentityState state)
         {
-
+            maxNumberOfJumps = 1;
+            manualSwitchEnabled = false;
         }
 
         void TransitionExit(GameManager.IdentityState state)
         {
-            if (state == GameManager.IdentityState.Two)
+           
+            switch (state)
             {
-                currentIdentity = two;
-                maxNumberOfJumps = 2;
+                case GameManager.IdentityState.Two:
+                    currentIdentity = two;
+                    maxNumberOfJumps = 2;
+                    break;
+                case GameManager.IdentityState.Blue:
+                    currentIdentity = blue;
+                    manualSwitchEnabled = true;
+                    break;
+                case GameManager.IdentityState.There:
+                    currentIdentity = there;
+                    //make invisible platforms visible
+                    break;
+
+            
+           
             }
-            else maxNumberOfJumps = 1;
+
         }
 
        
