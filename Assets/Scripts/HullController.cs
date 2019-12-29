@@ -29,6 +29,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         int maxNumberOfJumps = 1;
 
         bool manualSwitchEnabled = false;
+        bool cancelJump = false;
 
         GUIStyle guiStyle = new GUIStyle();
         float[] speeds = new float[10];
@@ -43,14 +44,14 @@ namespace UnityStandardAssets.Characters.FirstPerson
             //WeRun Variables
             [HideInInspector] public bool walkingEnabled = true;
 
-            public float ForwardSpeed = 16.0f;   // Speed when walking forward
-            public float BackwardSpeed = 8.0f;  // Speed when walking backwards
-            public float StrafeSpeed = 8.0f;    // Speed when walking sideways
+            public float ForwardSpeed = 8.0f;   // Speed when walking forward
+            public float BackwardSpeed = 4.0f;  // Speed when walking backwards
+            public float StrafeSpeed = 4.0f;    // Speed when walking sideways
             public float RunMultiplier = 2;   // Speed when walking
             public KeyCode RunKey = KeyCode.LeftShift;
             public float JumpForce = 30f;
             public AnimationCurve SlopeCurveModifier = new AnimationCurve(new Keyframe(-90.0f, 1.0f), new Keyframe(0.0f, 1.0f), new Keyframe(90.0f, 0.0f));
-            [HideInInspector] public float CurrentTargetSpeed = 16f;
+            [HideInInspector] public float CurrentTargetSpeed = 8f;
 
 
 
@@ -179,8 +180,13 @@ namespace UnityStandardAssets.Characters.FirstPerson
             if (Input.GetKeyDown(currentInput[4]) && !m_Jump)
             {
                 m_Jump = true;
+                cancelJump = false;
             }
 
+            if (Input.GetKeyUp(currentInput[4]) && m_Jumping)
+            {
+                cancelJump = true;
+            }
 
 
             if (manualSwitchEnabled)
@@ -213,20 +219,27 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 Vector3 desiredMove = cam.transform.forward * input.y + cam.transform.right * input.x;
                 desiredMove = Vector3.ProjectOnPlane(desiredMove, m_GroundContactNormal).normalized;
 
-                desiredMove.x = desiredMove.x * movementSettings.CurrentTargetSpeed;
-                desiredMove.z = desiredMove.z * movementSettings.CurrentTargetSpeed;
-                desiredMove.y = desiredMove.y * movementSettings.CurrentTargetSpeed;
+                desiredMove.x = desiredMove.x * movementSettings.CurrentTargetSpeed ;
+                desiredMove.z = desiredMove.z * movementSettings.CurrentTargetSpeed ;
+                desiredMove.y = desiredMove.y * movementSettings.CurrentTargetSpeed ;
                 if (m_RigidBody.velocity.sqrMagnitude <
-                    (movementSettings.CurrentTargetSpeed * movementSettings.CurrentTargetSpeed))
+                    (movementSettings.CurrentTargetSpeed  * movementSettings.CurrentTargetSpeed))
                 {
                     m_RigidBody.AddForce(desiredMove * SlopeMultiplier(), ForceMode.Impulse);
+                    m_RigidBody.drag = 0;
+                }
+                if (m_RigidBody.velocity.sqrMagnitude > movementSettings.CurrentTargetSpeed * movementSettings.CurrentTargetSpeed * 0.81f && !m_IsGrounded)
+                {
+                    m_RigidBody.drag = 0.8f;
+                    
+                    
                 }
             }
 
             if (m_IsGrounded || (numberOfJumps < maxNumberOfJumps && numberOfJumps != 0)) //is the character able to jump
             {
                 //this line is actually what slows the character down, good to know
-                m_RigidBody.drag = advancedSettings.slowDownRate;
+                if(numberOfJumps == 0) m_RigidBody.drag = advancedSettings.slowDownRate;
 
                 if (m_Jump)
                 {
@@ -247,18 +260,25 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
             else
             {
-                m_RigidBody.drag = advancedSettings.slowDownRateAir;
+                //m_RigidBody.drag = advancedSettings.slowDownRateAir;
                 if (m_PreviouslyGrounded && !m_Jumping)
                 {
                     StickToGroundHelper();
                 }
+
             }
+            if (m_Jumping && cancelJump && m_RigidBody.velocity.y > float.Epsilon)
+            {
+                m_RigidBody.velocity = new Vector3(m_RigidBody.velocity.x, 0f, m_RigidBody.velocity.z);
+                cancelJump = false;
+            }
+
             m_Jump = false;
 
             
             speeds[speedsindex] = Mathf.Sqrt(Mathf.Pow(m_RigidBody.velocity.x, 2) + Mathf.Pow(m_RigidBody.velocity.z, 2));
             speeds[speedsindex] = Mathf.Round(speeds[speedsindex] * 100);
-            Debug.Log(speeds[speedsindex].ToString() + " / " + Velocity.y);
+            //Debug.Log(speeds[speedsindex].ToString() + " / " + Velocity.y);
             if (speedsindex < 9) speedsindex++;
             else speedsindex = 0;
 
@@ -411,6 +431,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             
             GUI.Label(new Rect(20, 70, 700, 80), "X-speed: " + sum, guiStyle);
             GUI.Label(new Rect(20, 110, 700, 80), "Y-speed: " + Mathf.Abs(m_RigidBody.velocity.y), guiStyle);
+            GUI.Label(new Rect(20, 150, 700, 80), "Grounded: " + m_IsGrounded, guiStyle);
 
 
 
