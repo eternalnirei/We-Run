@@ -10,7 +10,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(CapsuleCollider))]
     [RequireComponent(typeof(GameManager))]
-    public class CharacterController : MonoBehaviour
+    public class HullController : MonoBehaviour
     {
         //variables of the WeRun Team
 
@@ -29,6 +29,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
         int maxNumberOfJumps = 1;
 
         bool manualSwitchEnabled = false;
+
+        GUIStyle guiStyle = new GUIStyle();
+        float[] speeds = new float[10];
+        int speedsindex = 0;
+       
        
 
         [Serializable]
@@ -41,7 +46,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             public float ForwardSpeed = 16.0f;   // Speed when walking forward
             public float BackwardSpeed = 8.0f;  // Speed when walking backwards
             public float StrafeSpeed = 8.0f;    // Speed when walking sideways
-            public float RunMultiplier = 0.5f;   // Speed when walking
+            public float RunMultiplier = 2;   // Speed when walking
             public KeyCode RunKey = KeyCode.LeftShift;
             public float JumpForce = 30f;
             public AnimationCurve SlopeCurveModifier = new AnimationCurve(new Keyframe(-90.0f, 1.0f), new Keyframe(0.0f, 1.0f), new Keyframe(90.0f, 0.0f));
@@ -73,7 +78,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                     CurrentTargetSpeed = ForwardSpeed;
                 }
 #if !MOBILE_INPUT
-                if (Input.GetKey(RunKey) && walkingEnabled)
+                if (Input.GetKey(RunKey))
                 {
                     CurrentTargetSpeed *= RunMultiplier;
                     m_Running = true;
@@ -100,6 +105,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             public float groundCheckDistance = 0.01f; // distance for checking if the controller is grounded ( 0.01f seems to work best for this )
             public float stickToGroundHelperDistance = 0.5f; // stops the character
             public float slowDownRate = 20f; // rate at which the controller comes to a stop when there is no input
+            public float slowDownRateAir = 5f;
             public bool airControl; // can the user control the direction that is being moved in the air
             [Tooltip("set it to 0.1 or more if you get stuck in wall")]
             public float shellOffset; //reduce the radius by that ratio to avoid getting stuck in wall (a value of 0.1f is nice)
@@ -151,12 +157,14 @@ namespace UnityStandardAssets.Characters.FirstPerson
             GameManager.OnTransitionEnter += TransitionEnter; // events are registered to event Manager
             GameManager.OnTransitionExit += TransitionExit;
 
+
+
         }
 
 
         private void Start()
         {
-            
+            guiStyle.fontSize = 30;
 
             m_RigidBody = GetComponent<Rigidbody>();
             m_Capsule = GetComponent<CapsuleCollider>();
@@ -215,16 +223,17 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 }
             }
 
-            if (m_IsGrounded || numberOfJumps < maxNumberOfJumps)
+            if (m_IsGrounded || (numberOfJumps < maxNumberOfJumps && numberOfJumps != 0)) //is the character able to jump
             {
                 //this line is actually what slows the character down, good to know
-                if (numberOfJumps == 0) m_RigidBody.drag = 5f;
+                m_RigidBody.drag = advancedSettings.slowDownRate;
 
                 if (m_Jump)
                 {
-                    m_RigidBody.drag = 0f;
+                   
                     m_RigidBody.velocity = new Vector3(m_RigidBody.velocity.x, 0f, m_RigidBody.velocity.z);
                     m_RigidBody.AddForce(new Vector3(0f, movementSettings.JumpForce, 0f), ForceMode.Impulse);
+                    m_RigidBody.drag = advancedSettings.slowDownRateAir;
                     m_Jumping = true;
                     //doubleJump
                     numberOfJumps++;
@@ -238,13 +247,22 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
             else
             {
-                m_RigidBody.drag = 0f;
+                m_RigidBody.drag = advancedSettings.slowDownRateAir;
                 if (m_PreviouslyGrounded && !m_Jumping)
                 {
                     StickToGroundHelper();
                 }
             }
             m_Jump = false;
+
+            
+            speeds[speedsindex] = Mathf.Sqrt(Mathf.Pow(m_RigidBody.velocity.x, 2) + Mathf.Pow(m_RigidBody.velocity.z, 2));
+            speeds[speedsindex] = Mathf.Round(speeds[speedsindex] * 100);
+            Debug.Log(speeds[speedsindex].ToString() + " / " + Velocity.y);
+            if (speedsindex < 9) speedsindex++;
+            else speedsindex = 0;
+
+
         }
 
 
@@ -381,7 +399,23 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         }
 
-       
+        private void OnGUI()
+        {
+            float sum = 0;
+
+            for(int i = 0; i < speeds.Length; i++)
+            {
+                sum += speeds[i];
+            }
+            sum /= 10;
+            
+            GUI.Label(new Rect(20, 70, 700, 80), "X-speed: " + sum, guiStyle);
+            GUI.Label(new Rect(20, 110, 700, 80), "Y-speed: " + Mathf.Abs(m_RigidBody.velocity.y), guiStyle);
+
+
+
+        }
+
 
 
     }

@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startIdentity: 3
-  timeToSwitch: 10
+  identityDuration: 30
   transitionDuration: 2
 --- !u!114 &5248176281056158474
 MonoBehaviour:
@@ -95,10 +95,10 @@ MonoBehaviour:
   cam: {fileID: 5248176281996594646}
   movementSettings:
     walkingEnabled: 0
-    ForwardSpeed: 16
-    BackwardSpeed: 8
-    StrafeSpeed: 8
-    RunMultiplier: 0.3
+    ForwardSpeed: 8
+    BackwardSpeed: 4
+    StrafeSpeed: 4
+    RunMultiplier: 2
     RunKey: 304
     JumpForce: 50
     SlopeCurveModifier:
@@ -147,8 +147,9 @@ MonoBehaviour:
   advancedSettings:
     groundCheckDistance: 0.01
     stickToGroundHelperDistance: 0.5
-    slowDownRate: 20
-    airControl: 0
+    slowDownRate: 5
+    slowDownRateAir: 0
+    airControl: 1
     shellOffset: 0
 --- !u!1 &5248176281997447154
 GameObject:
