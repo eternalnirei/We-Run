@@ -1408,41 +1408,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5248176281997087700, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
         type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5248176281997087700, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5248176281997087700, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5248176281997087700, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5248176281997087700, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5248176281997087700, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5248176281997087700, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: -0.00000016292068
-      objectReference: {fileID: 0}
-    - target: {fileID: 5248176281997087700, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
@@ -1461,58 +1426,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5248176281056158474, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
-      propertyPath: advancedSettings.slowDownRateAir
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5248176281056158474, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
-      propertyPath: movementSettings.JumpForce
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 5248176281056158474, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
-      propertyPath: advancedSettings.slowDownRate
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5248176281056158474, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
-      propertyPath: movementSettings.ForwardSpeed
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5248176281056158474, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
-      propertyPath: advancedSettings.airControl
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5248176281056158474, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
-      propertyPath: advancedSettings.shellOffset
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5248176281056158474, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
-      propertyPath: advancedSettings.groundCheckDistance
-      value: 0.11
-      objectReference: {fileID: 0}
-    - target: {fileID: 5248176281056158474, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
-      propertyPath: advancedSettings.stickToGroundHelperDistance
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5248176281056158475, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
-      propertyPath: startIdentity
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5248176281056158475, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
         type: 3}
       propertyPath: timeToSwitch
       value: 30
       objectReference: {fileID: 0}
-    - target: {fileID: 5248176282008222224, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
+    - target: {fileID: 0}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}

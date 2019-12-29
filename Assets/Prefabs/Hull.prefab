@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5248176281997447152}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: -0.00000016292068}
-  m_LocalPosition: {x: 0, y: 1.25, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5248176281997087702}
@@ -77,7 +77,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b095cbe04b32b7d4280a127483e649dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startIdentity: 3
+  startIdentity: 0
   identityDuration: 30
   transitionDuration: 2
 --- !u!114 &5248176281056158474
@@ -100,7 +100,7 @@ MonoBehaviour:
     StrafeSpeed: 4
     RunMultiplier: 2
     RunKey: 304
-    JumpForce: 50
+    JumpForce: 70
     SlopeCurveModifier:
       serializedVersion: 2
       m_Curve:
@@ -145,12 +145,12 @@ MonoBehaviour:
     smoothTime: 5
     lockCursor: 1
   advancedSettings:
-    groundCheckDistance: 0.01
-    stickToGroundHelperDistance: 0.5
+    groundCheckDistance: 0.11
+    stickToGroundHelperDistance: 0.6
     slowDownRate: 5
     slowDownRateAir: 0
     airControl: 1
-    shellOffset: 0
+    shellOffset: 0.1
 --- !u!1 &5248176281997447154
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,7 +162,6 @@ GameObject:
   - component: {fileID: 5248176281997087702}
   - component: {fileID: 5248176281996594646}
   - component: {fileID: 5248176282003083766}
-  - component: {fileID: 5248176282008222224}
   - component: {fileID: 5248176282007132062}
   m_Layer: 0
   m_Name: MainCamera
@@ -236,81 +235,6 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5248176281997447154}
   m_Enabled: 1
---- !u!114 &5248176282008222224
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5248176281997447154}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83c81407209f85e4c87c0cda8b32868e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Camera: {fileID: 5248176281996594646}
-  motionBob:
-    HorizontalBobRange: 0.1
-    VerticalBobRange: 0.05
-    Bobcurve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.5
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 1
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 1.5
-        value: -1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 2
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    VerticaltoHorizontalRatio: 2
-  jumpAndLandingBob:
-    BobDuration: 0.15
-    BobAmount: 0.2
-  rigidbodyFirstPersonController: {fileID: 11400004, guid: c6453f8e1f814744d8b94e5a6d1f9942,
-    type: 3}
-  StrideInterval: 4
-  RunningStrideLengthen: 0.722
 --- !u!124 &5248176282007132062
 Behaviour:
   m_ObjectHideFlags: 0
