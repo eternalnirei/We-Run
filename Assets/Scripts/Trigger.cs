@@ -12,6 +12,7 @@ public class Trigger : MonoBehaviour
     {
         if(other.GetComponent<GameManager>() != null)
         {
+            if (other.GetComponent<GameManager>().CurrentIdentity != identityToTrigger)
             other.GetComponent<GameManager>().SendMessage("TriggerIdentity", (int)identityToTrigger, SendMessageOptions.RequireReceiver);
         }
     }
