@@ -5,9 +5,36 @@ using UnityEngine;
 public class Identity : MonoBehaviour
 {
    
-    string name;
+    //string name;
     KeyCode[] baseControls;
-    int chance, dominance;
+    int chance; 
+    float identityDominance;
+    public float IdentityDominance
+    {
+        get
+        {
+            return this.identityDominance;
+        }
+        set
+        {
+            this.identityDominance = value;
+        }
+    }
+
+    //timing the Identity
+    double identityTimer;
+    public double IdentityTimer
+    {
+        get
+        {
+            return this.identityTimer;
+        }
+        set
+        {
+            this.identityTimer = value;
+        }
+    }
+
     //LightMode lightmode;
     //MusicMode musicmode;
     
@@ -26,7 +53,12 @@ public class Identity : MonoBehaviour
 
     }
 
+    public float CalculationOfDominance(double IdentityTimer)
+    {
+        identityDominance = (float)(GameManager.leveltimer - this.IdentityTimer) / 100;
 
+        return identityDominance;
+    }
 
 
 }

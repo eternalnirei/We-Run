@@ -33,13 +33,32 @@ public class GameManager : MonoBehaviour
 
     bool isInTransition;
 
+    //to see if each identity has passed through at least once
+    bool firstTimeBlue;
+    bool firstTimeTwo;
+    bool firstTimeThere;
+
+    //time to switch identities
     float timer;
+
+    //Instances of the Identity class to match up with the IdentityState
+    Identity BlueIdentity = new Identity();
+    Identity TwoIdentity = new Identity();
+    Identity ThereIdentity = new Identity();
+    Identity CurrentIdentityCharacteristics = new Identity();
+
+    //timing the level
+    public static double leveltimer;
 
     //GUIElements - Debug only
     GUIStyle guiStyle = new GUIStyle();
 
     private void Start()
     {
+        leveltimer = 0f;
+        BlueIdentity.IdentityTimer = 0f;
+        TwoIdentity.IdentityTimer = 0f;
+        ThereIdentity.IdentityTimer = 0f;
         currentIdentity = startIdentity;
         OnTransitionExit(currentIdentity);
 
@@ -50,9 +69,29 @@ public class GameManager : MonoBehaviour
     {
         if(!isInTransition)
         {
+            //switch to keep track of the time spent in each identity AND the characteristics of the current identity
+            switch (currentIdentity)
+            {
+                case IdentityState.Blue:
+                    BlueIdentity.IdentityTimer += Time.deltaTime;
+                    CurrentIdentityCharacteristics = BlueIdentity;
+                    break;
+                case IdentityState.There:
+                    ThereIdentity.IdentityTimer += Time.deltaTime;
+                    CurrentIdentityCharacteristics = ThereIdentity;
+                    break;
+                case IdentityState.Two:
+                    ThereIdentity.IdentityTimer += Time.deltaTime;
+                    CurrentIdentityCharacteristics = TwoIdentity;
+                    break;
+                default:
+                    Debug.LogError("Error in the Switch(CurrentIdentity) of GameManager.Update");
+                    break;
+            }
             if (timer >= identityDuration)
             {
-                nextIdentity = (IdentityState)Random.Range(0, 3);
+                //TODO IMPLEMENT THE CALCULATIONS FOR THE SELECTION OF THE NEXT IDENTITY
+                nextIdentity = IdentitySelection();
                 TransitionBegin();
                 
             }
@@ -67,6 +106,7 @@ public class GameManager : MonoBehaviour
         }
 
         timer += Time.deltaTime;
+        leveltimer += Time.deltaTime;
     }
 
     void TransitionBegin()
@@ -111,6 +151,63 @@ public class GameManager : MonoBehaviour
     {
         guiStyle.fontSize = 40;
         GUI.Label(new Rect(20, 20, 500, 80), currentIdentity.ToString(), guiStyle);
+        GUI.Label(new Rect(550, 20, 500, 80), CurrentIdentityCharacteristics.IdentityTimer.ToString(), guiStyle);
+    }
+
+    IdentityState IdentitySelection()
+    {
+        /*the dominance of an identity depends on the time spent in that identity, as well
+        as if the identity has passed again, the stability of the identity, and randomness*/
+        //compare the resulting float numbers and declare the corresponding identity the dominant one
+        //create or find the instance of each identity (maybe in Identity) and connect it to here.
+        IdentityState dominantIdentity = (IdentityState)0;
+        float[] dominance = new float[3];
+        float maxDominance = 0f;
+        int maxIdentity = 0;
+
+        BlueIdentity.IdentityDominance = BlueIdentity.CalculationOfDominance(BlueIdentity.IdentityTimer);
+        TwoIdentity.IdentityDominance = TwoIdentity.CalculationOfDominance(TwoIdentity.IdentityTimer);
+        ThereIdentity.IdentityDominance = ThereIdentity.CalculationOfDominance(ThereIdentity.IdentityTimer);
+
+        for (int x = 0; x < 3; x++)
+        {
+            switch (x)
+            {
+                case 0: 
+                    dominance[0] = BlueIdentity.IdentityDominance;
+                    break;
+                case 1: 
+                    dominance[1] = TwoIdentity.IdentityDominance;
+                    break;
+                case 2: 
+                    dominance[2] = ThereIdentity.IdentityDominance;
+                    break;
+                default:
+                    Debug.LogError("Error in the Switch(x) of GameManager.IdentitySelection");
+                    break;
+            }
+            if (maxDominance >= dominance[x])
+            { 
+                maxDominance = dominance[x];
+                maxIdentity = x;
+            }
+        }
+        switch (maxIdentity)
+        {
+            case 0: 
+                dominantIdentity = (IdentityState)0;
+                break;
+            case 1:
+                dominantIdentity = (IdentityState)1;
+                break;
+            case 2:
+                dominantIdentity = (IdentityState)2;
+                break;
+            default:
+                Debug.LogError("Error in the Switch(maxIdentity) of GameManager.IdentitySelection");
+                break;
+        }
+        return dominantIdentity;
     }
 
 }
