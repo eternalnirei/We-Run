@@ -120,12 +120,38 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &18933336 stripped
+--- !u!1 &18933336
 GameObject:
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 4553290073538286241, guid: 09a7337d1c1e4e94384035a7ad22c8ce,
     type: 3}
   m_PrefabInstance: {fileID: 1973165124}
   m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 18933337}
+  - component: {fileID: 18933338}
+  m_Layer: 0
+  m_Name: Missing Prefab (Dummy)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &18933337
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 1973165124}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 18933336}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1371236705}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &18933338
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1262,7 +1288,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1260628043
 GameObject:
@@ -1521,6 +1547,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1371236704
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 1973165124}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1371236705}
+  m_Layer: 0
+  m_Name: Plane.001 (Missing Prefab)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1371236705
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 1973165124}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371236704}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 18933337}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1398702921
 GameObject:
   m_ObjectHideFlags: 0
@@ -1615,6 +1672,36 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hull
       objectReference: {fileID: 0}
+    - target: {fileID: 5248176281056158474, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
+        type: 3}
+      propertyPath: movementSettings.RunMultiplier
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5248176281056158474, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
+        type: 3}
+      propertyPath: movementSettings.ForwardSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5248176281056158474, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
+        type: 3}
+      propertyPath: movementSettings.BackwardSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5248176281056158474, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
+        type: 3}
+      propertyPath: movementSettings.StrafeSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5248176281056158474, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
+        type: 3}
+      propertyPath: movementSettings.JumpForce
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 5248176281056158474, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
+        type: 3}
+      propertyPath: advancedSettings.slowDownRate
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5248176281997087700, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1669,36 +1756,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5248176281056158474, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
-      propertyPath: movementSettings.RunMultiplier
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5248176281056158474, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
-      propertyPath: movementSettings.ForwardSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5248176281056158474, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
-      propertyPath: movementSettings.BackwardSpeed
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5248176281056158474, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
-      propertyPath: movementSettings.StrafeSpeed
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5248176281056158474, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
-      propertyPath: movementSettings.JumpForce
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 5248176281056158474, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
-      propertyPath: advancedSettings.slowDownRate
-      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5248176281056158475, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
         type: 3}

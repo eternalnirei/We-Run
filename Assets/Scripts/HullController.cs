@@ -105,7 +105,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             public float groundCheckDistance = 0.01f; // distance for checking if the controller is grounded ( 0.01f seems to work best for this )
             public float stickToGroundHelperDistance = 0.5f; // stops the character
+            [HideInInspector]
             public float slowDownRate = 20f; // rate at which the controller comes to a stop when there is no input
+            [HideInInspector]
             public float slowDownRateAir = 5f;
             public bool airControl; // can the user control the direction that is being moved in the air
             [Tooltip("set it to 0.1 or more if you get stuck in wall")]
@@ -429,7 +431,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
             sum /= 10;
             
-            GUI.Label(new Rect(20, 70, 700, 80), "X-speed: " + sum, guiStyle);
+            GUI.Label(new Rect(20, 70, 700, 80), "X-speed: " + sum * 0.01f, guiStyle);
             GUI.Label(new Rect(20, 110, 700, 80), "Y-speed: " + Mathf.Abs(m_RigidBody.velocity.y), guiStyle);
             GUI.Label(new Rect(20, 150, 700, 80), "Grounded: " + m_IsGrounded, guiStyle);
 
