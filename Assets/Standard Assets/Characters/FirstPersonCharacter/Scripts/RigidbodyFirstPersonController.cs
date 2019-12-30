@@ -8,14 +8,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
     [RequireComponent(typeof (CapsuleCollider))]
     public class RigidbodyFirstPersonController : MonoBehaviour
     {
-        float[] speeds = new float[10];
-        int speedsindex = 0;
-
         [Serializable]
         public class MovementSettings
         {
-
-
             public float ForwardSpeed = 8.0f;   // Speed when walking forward
             public float BackwardSpeed = 4.0f;  // Speed when walking backwards
             public float StrafeSpeed = 4.0f;    // Speed when walking sideways
@@ -76,7 +71,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
             public float groundCheckDistance = 0.01f; // distance for checking if the controller is grounded ( 0.01f seems to work best for this )
             public float stickToGroundHelperDistance = 0.5f; // stops the character
             public float slowDownRate = 20f; // rate at which the controller comes to a stop when there is no input
-            //public float slowDownRateG = 5f;
             public bool airControl; // can the user control the direction that is being moved in the air
             [Tooltip("set it to 0.1 or more if you get stuck in wall")]
             public float shellOffset; //reduce the radius by that ratio to avoid getting stuck in wall (a value of 0.1f is nice)
@@ -142,22 +136,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
         }
 
-        private void OnGUI()
-        {
-            float sum = 0;
-
-            for (int i = 0; i < speeds.Length; i++)
-            {
-                sum += speeds[i];
-            }
-            sum /= 10;
-
-            GUI.Label(new Rect(20, 70, 700, 80), "X-speed: " + sum);
-            GUI.Label(new Rect(20, 110, 700, 80), "Y-speed: " + Mathf.Abs(m_RigidBody.velocity.y));
-
-
-
-        }
 
         private void FixedUpdate()
         {
@@ -206,13 +184,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 }
             }
             m_Jump = false;
-
-            speeds[speedsindex] = Mathf.Sqrt(Mathf.Pow(m_RigidBody.velocity.x, 2) + Mathf.Pow(m_RigidBody.velocity.z, 2));
-            speeds[speedsindex] = Mathf.Round(speeds[speedsindex] * 100);
-            Debug.Log(speeds[speedsindex].ToString() + " / " + Velocity.y);
-            if (speedsindex < 9) speedsindex++;
-            else speedsindex = 0;
-
         }
 
 
