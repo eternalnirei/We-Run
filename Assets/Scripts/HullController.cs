@@ -14,17 +14,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
     {
         //variables of the WeRun Team
 
-        bool isAlive = true;
-
-        public delegate void DeathAndRespawn(bool IsDead);
-        public static event DeathAndRespawn OnDeath;
-
-        private Rigidbody rBody;
-
-        public float deathThresholdSpeed;
-
-        public Vector3 checkpointPosition;
-
+        int lives;
         string goal;
 
         Identity blue;
@@ -178,7 +168,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void Start()
         {
             guiStyle.fontSize = 30;
-            checkpointPosition = transform.position;
 
             m_RigidBody = GetComponent<Rigidbody>();
             m_Capsule = GetComponent<CapsuleCollider>();
@@ -223,87 +212,79 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void FixedUpdate()
         {
-            if (isAlive)
+            GroundCheck();
+            Vector2 input = GetInput();
+
+            if ((Mathf.Abs(input.x) > float.Epsilon || Mathf.Abs(input.y) > float.Epsilon) && (advancedSettings.airControl || m_IsGrounded))
             {
-                GroundCheck();
-                Vector2 input = GetInput();
+                // always move along the camera forward as it is the direction that it being aimed at
+                Vector3 desiredMove = cam.transform.forward * input.y + cam.transform.right * input.x;
+                desiredMove = Vector3.ProjectOnPlane(desiredMove, m_GroundContactNormal).normalized;
 
-                if ((Mathf.Abs(input.x) > float.Epsilon || Mathf.Abs(input.y) > float.Epsilon) && (advancedSettings.airControl || m_IsGrounded))
+                desiredMove.x = desiredMove.x * movementSettings.CurrentTargetSpeed ;
+                desiredMove.z = desiredMove.z * movementSettings.CurrentTargetSpeed ;
+                desiredMove.y = desiredMove.y * movementSettings.CurrentTargetSpeed ;
+                if (m_RigidBody.velocity.sqrMagnitude <
+                    (movementSettings.CurrentTargetSpeed  * movementSettings.CurrentTargetSpeed))
                 {
-                    // always move along the camera forward as it is the direction that it being aimed at
-                    Vector3 desiredMove = cam.transform.forward * input.y + cam.transform.right * input.x;
-                    desiredMove = Vector3.ProjectOnPlane(desiredMove, m_GroundContactNormal).normalized;
-
-                    desiredMove.x = desiredMove.x * movementSettings.CurrentTargetSpeed;
-                    desiredMove.z = desiredMove.z * movementSettings.CurrentTargetSpeed;
-                    desiredMove.y = desiredMove.y * movementSettings.CurrentTargetSpeed;
-                    if (m_RigidBody.velocity.sqrMagnitude <
-                        (movementSettings.CurrentTargetSpeed * movementSettings.CurrentTargetSpeed))
-                    {
-                        m_RigidBody.AddForce(desiredMove * SlopeMultiplier(), ForceMode.Impulse);
-                        m_RigidBody.drag = 0;
-                    }
-                    if (m_RigidBody.velocity.sqrMagnitude > movementSettings.CurrentTargetSpeed * movementSettings.CurrentTargetSpeed * 0.81f && !m_IsGrounded)
-                    {
-                        m_RigidBody.drag = 0.8f;
-
-
-                    }
+                    m_RigidBody.AddForce(desiredMove * SlopeMultiplier(), ForceMode.Impulse);
+                    m_RigidBody.drag = 0;
                 }
-
-                if (m_IsGrounded || (numberOfJumps < maxNumberOfJumps && numberOfJumps != 0)) //is the character able to jump
+                if (m_RigidBody.velocity.sqrMagnitude > movementSettings.CurrentTargetSpeed * movementSettings.CurrentTargetSpeed * 0.81f && !m_IsGrounded)
                 {
-                    //this line is actually what slows the character down, good to know
-                    if (numberOfJumps == 0) m_RigidBody.drag = advancedSettings.slowDownRate;
-
-                    if (m_Jump)
-                    {
-
-                        m_RigidBody.velocity = new Vector3(m_RigidBody.velocity.x, 0f, m_RigidBody.velocity.z);
-                        m_RigidBody.AddForce(new Vector3(0f, movementSettings.JumpForce, 0f), ForceMode.Impulse);
-                        m_RigidBody.drag = advancedSettings.slowDownRateAir;
-                        m_Jumping = true;
-                        //doubleJump
-                        numberOfJumps++;
-
-                    }
-
-                    if (!m_Jumping && Mathf.Abs(input.x) < float.Epsilon && Mathf.Abs(input.y) < float.Epsilon && m_RigidBody.velocity.magnitude < 1f)
-                    {
-                        m_RigidBody.Sleep();
-                    }
+                    m_RigidBody.drag = 0.8f;
+                    
+                    
                 }
-                else
-                {
-                    //m_RigidBody.drag = advancedSettings.slowDownRateAir;
-                    if (m_PreviouslyGrounded && !m_Jumping)
-                    {
-                        StickToGroundHelper();
-                    }
+            }
 
-                }
-                if (m_Jumping && cancelJump && m_RigidBody.velocity.y > float.Epsilon)
+            if (m_IsGrounded || (numberOfJumps < maxNumberOfJumps && numberOfJumps != 0)) //is the character able to jump
+            {
+                //this line is actually what slows the character down, good to know
+                if(numberOfJumps == 0) m_RigidBody.drag = advancedSettings.slowDownRate;
+
+                if (m_Jump)
                 {
+                   
                     m_RigidBody.velocity = new Vector3(m_RigidBody.velocity.x, 0f, m_RigidBody.velocity.z);
-                    cancelJump = false;
+                    m_RigidBody.AddForce(new Vector3(0f, movementSettings.JumpForce, 0f), ForceMode.Impulse);
+                    m_RigidBody.drag = advancedSettings.slowDownRateAir;
+                    m_Jumping = true;
+                    //doubleJump
+                    numberOfJumps++;
+
                 }
 
-                m_Jump = false;
-
-
-                speeds[speedsindex] = Mathf.Sqrt(Mathf.Pow(m_RigidBody.velocity.x, 2) + Mathf.Pow(m_RigidBody.velocity.z, 2));
-                speeds[speedsindex] = Mathf.Round(speeds[speedsindex] * 100);
-                //Debug.Log(speeds[speedsindex].ToString() + " / " + Velocity.y);
-                if (speedsindex < 9) speedsindex++;
-                else speedsindex = 0;
-
-                if(m_RigidBody.velocity.y <= -deathThresholdSpeed)
+                if (!m_Jumping && Mathf.Abs(input.x) < float.Epsilon && Mathf.Abs(input.y) < float.Epsilon && m_RigidBody.velocity.magnitude < 1f)
                 {
-                    Death();
+                    m_RigidBody.Sleep();
                 }
-
+            }
+            else
+            {
+                //m_RigidBody.drag = advancedSettings.slowDownRateAir;
+                if (m_PreviouslyGrounded && !m_Jumping)
+                {
+                    StickToGroundHelper();
+                }
 
             }
+            if (m_Jumping && cancelJump && m_RigidBody.velocity.y > float.Epsilon)
+            {
+                m_RigidBody.velocity = new Vector3(m_RigidBody.velocity.x, 0f, m_RigidBody.velocity.z);
+                cancelJump = false;
+            }
+
+            m_Jump = false;
+
+            
+            speeds[speedsindex] = Mathf.Sqrt(Mathf.Pow(m_RigidBody.velocity.x, 2) + Mathf.Pow(m_RigidBody.velocity.z, 2));
+            speeds[speedsindex] = Mathf.Round(speeds[speedsindex] * 100);
+            //Debug.Log(speeds[speedsindex].ToString() + " / " + Velocity.y);
+            if (speedsindex < 9) speedsindex++;
+            else speedsindex = 0;
+
+
         }
 
 
@@ -409,40 +390,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 numberOfJumps = 0;
             }
         }
-
-        private void OnCollisionEnter(Collision other)
-        {
-            if (other.gameObject.CompareTag("Spawnpoint") && m_IsGrounded)
-            {
-                checkpointPosition = other.transform.position + Vector3.up;
-            }
-        }
-
-        public void Death()
-        {
-
-            isAlive = false;
-            OnDeath(isAlive);
-            StartCoroutine(Respawn());
-
-        }
-
-        private IEnumerator Respawn()
-        {
-            yield return new WaitForSeconds(2f);
-            m_RigidBody.velocity = Vector3.zero;
-            m_RigidBody.position = checkpointPosition;
-            //reset rigidbody
-            //reset position
-            OnDeath(true);
-            yield return new WaitForSeconds(1f);
-
-            isAlive = true;
-
-
-
-        }
-
 
         void TransitionEnter(GameManager.IdentityState state)
         {
