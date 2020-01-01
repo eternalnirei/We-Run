@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(SphereCollider))]
 [RequireComponent(typeof(MeshRenderer))]
 public class TherePlatform : MonoBehaviour
 {
-
-    Collider collider;
+    SphereCollider sphereCollider;
     MeshRenderer meshRenderer;
 
     
 
     void Start()
     {
-        collider = GetComponent<Collider>();
+        sphereCollider = GetComponent<SphereCollider>();
         meshRenderer = GetComponent<MeshRenderer>();
         Deactivate();
 
@@ -45,13 +44,13 @@ public class TherePlatform : MonoBehaviour
 
     void Activate()
     {
-        collider.enabled = true;
+        sphereCollider.enabled = true;
         meshRenderer.enabled = true;
     }
 
     void Deactivate()
     {
-        collider.enabled = false;
+        sphereCollider.enabled = false;
         meshRenderer.enabled = false;
     }
 
