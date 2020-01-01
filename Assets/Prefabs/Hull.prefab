@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7333a251b15554445a0850a48899d2b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadingActiveted: 1
+  fadingActivated: 1
 --- !u!1 &5248176281997447152
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,7 +186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dfa80432b07475489dda4c9e1968fb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deathThresholdSpeed: 0
+  deathThresholdSpeed: 10
   checkpointPosition: {x: 0, y: 0, z: 0}
   cam: {fileID: 5248176281996594646}
   movementSettings:
