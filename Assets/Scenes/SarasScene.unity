@@ -1087,7 +1087,7 @@ GameObject:
   - component: {fileID: 1506975235}
   m_Layer: 0
   m_Name: Cube (6)
-  m_TagString: Spawnpoint
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1100,7 +1100,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1506975233}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -9.52, y: -2, z: -19.12}
+  m_LocalPosition: {x: -9.52, y: -3.97, z: -19.12}
   m_LocalScale: {x: 7.3845, y: 1, z: 3.7086}
   m_Children: []
   m_Father: {fileID: 1963781883}
@@ -1861,11 +1861,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2490505587082055171, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
-      propertyPath: fadingActiveted
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Enabled
       value: 0
@@ -1879,11 +1874,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5248176281056158474, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
-        type: 3}
-      propertyPath: deathThresholdSpeed
-      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5248176281997087700, guid: d12b8bd12d3073b4f8ba9a1a2f0722bc,
         type: 3}
