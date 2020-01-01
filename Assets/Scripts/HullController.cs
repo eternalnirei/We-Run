@@ -179,7 +179,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             guiStyle.fontSize = 30;
             spawnPosition = transform.position;
-
             m_RigidBody = GetComponent<Rigidbody>();
             m_Capsule = GetComponent<CapsuleCollider>();
             mouseLook.Init(transform, cam.transform);
@@ -489,8 +488,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
 
         }
-
-        //GUI and UI Functions
 
         private void OnGUI()
         {

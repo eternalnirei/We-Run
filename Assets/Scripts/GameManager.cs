@@ -34,6 +34,8 @@ public class GameManager : MonoBehaviour
     bool isInTransition;
 
     float timer;
+    public static float leveltimer;
+
 
     //GUIElements - Debug only
     GUIStyle guiStyle = new GUIStyle();
@@ -67,7 +69,6 @@ public class GameManager : MonoBehaviour
 
             }
         }
-
         timer += Time.deltaTime;
     }
 

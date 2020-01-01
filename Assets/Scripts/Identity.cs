@@ -5,9 +5,18 @@ using UnityEngine;
 public class Identity : MonoBehaviour
 {
    
-    string name;
+    //string name;
     KeyCode[] baseControls;
-    int chance, dominance;
+    int stability;
+    public int Stability
+    {
+        get; set;
+    }
+    int dominance;
+    public int Dominance
+    {
+        get; set;
+    }
     //LightMode lightmode;
     //MusicMode musicmode;
     
