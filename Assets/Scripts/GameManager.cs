@@ -148,6 +148,11 @@ public class GameManager : MonoBehaviour
         if (dominanceTimer >= 3)
         {
             CurrentIdentityProperties.Dominance += 1;
+            if (TriggerWinLevel.levelWon == true)
+            {
+                CurrentIdentityProperties.Dominance += 50;
+                TriggerWinLevel.levelWon = false;
+            }
             dominanceTimer = 0;
         }
 
