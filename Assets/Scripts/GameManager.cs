@@ -34,7 +34,17 @@ public class GameManager : MonoBehaviour
     bool isInTransition;
 
     float timer;
+<<<<<<< HEAD
+=======
+    float dominanceTimer;
+>>>>>>> Finally getting back on track; Fixed logical mistake that didn't differentiate between identities. Implemented the beginnings of identity dominance, imputed also on the UI
     public static float leveltimer;
+
+    //Instantiating the identities
+    Identity BlueProperties = new Identity();
+    Identity TwoProperties = new Identity();
+    Identity ThereProperties = new Identity();
+    Identity CurrentIdentityProperties = new Identity();
 
 
     //GUIElements - Debug only
@@ -59,6 +69,9 @@ public class GameManager : MonoBehaviour
                 nextIdentity = (IdentityState)Random.Range(0, 3);
                 TransitionBegin();
                 
+            }else
+            {
+                IdentityDominance(currentIdentity);
             }
         } else
         {
@@ -70,6 +83,8 @@ public class GameManager : MonoBehaviour
             }
         }
         timer += Time.deltaTime;
+        dominanceTimer += Time.deltaTime;
+        leveltimer += Time.deltaTime;
     }
 
     void TransitionBegin()
@@ -109,15 +124,54 @@ public class GameManager : MonoBehaviour
         }
     }
 
+<<<<<<< HEAD
     void Death(bool isAlive)
     {
         TriggerIdentity((int)startIdentity);
     }
+=======
+    public void IdentityDominance(IdentityState state)
+    {
+        switch (state)
+        {
+            case IdentityState.Blue:
+                CurrentIdentityProperties = BlueProperties;
+                break;
+            case IdentityState.Two:
+                CurrentIdentityProperties = TwoProperties;
+                break;
+            case IdentityState.There:
+                CurrentIdentityProperties = ThereProperties;
+                break;
+        }
+
+        if (dominanceTimer >= 3)
+        {
+            CurrentIdentityProperties.Dominance += 1;
+            dominanceTimer = 0;
+        }
+
+        switch (state)
+        {
+            case IdentityState.Blue:
+                BlueProperties = CurrentIdentityProperties;
+                break;
+            case IdentityState.Two:
+                TwoProperties = CurrentIdentityProperties;
+                break;
+            case IdentityState.There:
+                ThereProperties = CurrentIdentityProperties;
+                break;
+        }
+    }
+
+>>>>>>> Finally getting back on track; Fixed logical mistake that didn't differentiate between identities. Implemented the beginnings of identity dominance, imputed also on the UI
 
     private void OnGUI()
     {
         guiStyle.fontSize = 40;
         GUI.Label(new Rect(20, 20, 500, 80), currentIdentity.ToString(), guiStyle);
+        GUI.Label(new Rect(250, 20, 500, 80), CurrentIdentityProperties.Dominance.ToString(), guiStyle);
     }
 
 }

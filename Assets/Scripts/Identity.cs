@@ -12,11 +12,19 @@ public class Identity : MonoBehaviour
     {
         get; set;
     }
+
     int dominance;
     public int Dominance
     {
         get; set;
     }
+
+    float identityTimer;
+    public float IdentityTimer
+    {
+        get; set;
+    }
+
     //LightMode lightmode;
     //MusicMode musicmode;
     

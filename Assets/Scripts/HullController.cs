@@ -25,12 +25,21 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private Vector3 checkpointPosition;
 
 
+<<<<<<< HEAD
         //Identity Variables
         Identity blue;
         Identity two;
         Identity there;
 
         Identity currentIdentity;
+=======
+        public Identity blue;
+        public Identity two;
+        public Identity there;
+
+        public Identity currentIdentity;
+        //public GameManager.IdentityState startIdentity;
+>>>>>>> Finally getting back on track; Fixed logical mistake that didn't differentiate between identities. Implemented the beginnings of identity dominance, imputed also on the UI
         KeyCode[] currentInput = { KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.Space, KeyCode.E };
 
         //special ability variables
@@ -178,7 +187,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void Start()
         {
             guiStyle.fontSize = 30;
+<<<<<<< HEAD
             spawnPosition = transform.position;
+=======
+            checkpointPosition = transform.position;
+
+>>>>>>> Finally getting back on track; Fixed logical mistake that didn't differentiate between identities. Implemented the beginnings of identity dominance, imputed also on the UI
             m_RigidBody = GetComponent<Rigidbody>();
             m_Capsule = GetComponent<CapsuleCollider>();
             mouseLook.Init(transform, cam.transform);
@@ -446,6 +460,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         //life, death and checkpoint functions
 
+<<<<<<< HEAD
         public void Death()
         {
 
@@ -489,6 +504,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         }
 
+=======
+>>>>>>> Finally getting back on track; Fixed logical mistake that didn't differentiate between identities. Implemented the beginnings of identity dominance, imputed also on the UI
         private void OnGUI()
         {
             float sum = 0;
