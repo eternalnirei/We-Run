@@ -14,33 +14,33 @@ namespace UnityStandardAssets.Characters.FirstPerson
     {
         //variables of the WeRun Team
 
+        //life, death and respawn variables
         bool isAlive = true;
 
         public delegate void DeathAndRespawn(bool IsDead);
         public static event DeathAndRespawn OnDeath;
 
-        private Rigidbody rBody;
-
         public float deathThresholdSpeed;
+        public Vector3 spawnPosition;
+        private Vector3 checkpointPosition;
 
-        public Vector3 checkpointPosition;
 
-        string goal;
-
+        //Identity Variables
         Identity blue;
         Identity two;
         Identity there;
 
         Identity currentIdentity;
-        //public GameManager.IdentityState startIdentity;
         KeyCode[] currentInput = { KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.Space, KeyCode.E };
 
+        //special ability variables
         int numberOfJumps = 0;
         int maxNumberOfJumps = 1;
 
         bool manualSwitchEnabled = false;
         bool cancelJump = false;
 
+        //GUI and UI Variable
         GUIStyle guiStyle = new GUIStyle();
         float[] speeds = new float[10];
         int speedsindex = 0;
@@ -178,14 +178,14 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void Start()
         {
             guiStyle.fontSize = 30;
-            checkpointPosition = transform.position;
+            spawnPosition = transform.position;
 
             m_RigidBody = GetComponent<Rigidbody>();
             m_Capsule = GetComponent<CapsuleCollider>();
             mouseLook.Init(transform, cam.transform);
         }
 
-
+        //for everything that is player Input or Rendering related
         private void Update()
         {
             RotateView();
@@ -220,7 +220,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         }
 
-
+        // for movement and everything that is physics related
         private void FixedUpdate()
         {
             if (isAlive)
@@ -306,6 +306,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
         }
 
+        //RigidbodyFPS Controller Functions
 
         private float SlopeMultiplier()
         {
@@ -410,39 +411,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
         }
 
-        private void OnCollisionEnter(Collision other)
-        {
-            if (other.gameObject.CompareTag("Spawnpoint") && m_IsGrounded)
-            {
-                checkpointPosition = other.transform.position + Vector3.up;
-            }
-        }
-
-        public void Death()
-        {
-
-            isAlive = false;
-            OnDeath(isAlive);
-            StartCoroutine(Respawn());
-
-        }
-
-        private IEnumerator Respawn()
-        {
-            yield return new WaitForSeconds(2f);
-            m_RigidBody.velocity = Vector3.zero;
-            m_RigidBody.position = checkpointPosition;
-            //reset rigidbody
-            //reset position
-            OnDeath(true);
-            yield return new WaitForSeconds(1f);
-
-            isAlive = true;
 
 
-
-        }
-
+        //Transition Functions
 
         void TransitionEnter(GameManager.IdentityState state)
         {
@@ -473,6 +444,53 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
         }
+
+        //life, death and checkpoint functions
+
+        public void Death()
+        {
+
+            isAlive = false;
+            OnDeath(isAlive);
+            StartCoroutine(Respawn());
+
+        }
+
+        private IEnumerator Respawn()
+        {
+            yield return new WaitForSeconds(2f);
+            m_RigidBody.velocity = Vector3.zero;
+            m_RigidBody.position = spawnPosition;
+            OnDeath(true);
+            yield return new WaitForSeconds(1f);
+
+            isAlive = true;
+
+
+
+        }
+
+        private void OnCollisionEnter(Collision other)
+        {
+            if (other.gameObject.CompareTag("Spawnpoint") && m_IsGrounded)
+            {
+                spawnPosition = other.transform.position + Vector3.up;
+            }
+        }
+
+
+        public void CheckpointIsReached(Vector3 newCheckpointPosition)
+        {
+            checkpointPosition = newCheckpointPosition;
+            spawnPosition = checkpointPosition;
+        }
+
+        public void GoalIsReached()
+        {
+
+        }
+
+        //GUI and UI Functions
 
         private void OnGUI()
         {

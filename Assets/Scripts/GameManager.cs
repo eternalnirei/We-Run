@@ -43,6 +43,8 @@ public class GameManager : MonoBehaviour
         currentIdentity = startIdentity;
         OnTransitionExit(currentIdentity);
 
+        UnityStandardAssets.Characters.FirstPerson.HullController.OnDeath += Death;
+
     }
 
     // Update is called once per frame
@@ -106,6 +108,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void Death(bool isAlive)
+    {
+        TriggerIdentity((int)startIdentity);
+    }
 
     private void OnGUI()
     {
