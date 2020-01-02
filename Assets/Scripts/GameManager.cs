@@ -39,12 +39,14 @@ public class GameManager : MonoBehaviour
     float dominanceTimer;
 >>>>>>> Finally getting back on track; Fixed logical mistake that didn't differentiate between identities. Implemented the beginnings of identity dominance, imputed also on the UI
     public static float leveltimer;
+    int dominantState;
 
     //Instantiating the identities
     Identity BlueProperties = new Identity();
     Identity TwoProperties = new Identity();
     Identity ThereProperties = new Identity();
     Identity CurrentIdentityProperties = new Identity();
+    Identity DominantIdentityProperties = new Identity();
 
 
     //GUIElements - Debug only
@@ -103,6 +105,7 @@ public class GameManager : MonoBehaviour
         isInTransition = false;
         //resetting timer
         timer = 0;
+        dominanceTimer = 0;
         //Parses int to enum
         CurrentIdentity = (IdentityState)nextIdentity;
 
@@ -132,6 +135,7 @@ public class GameManager : MonoBehaviour
 =======
     public void IdentityDominance(IdentityState state)
     {
+        //getting the propetries of current identity
         switch (state)
         {
             case IdentityState.Blue:
@@ -145,17 +149,25 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        if (dominanceTimer >= 3)
+        //incrementing dominance + checking for identity change to the most dominant one
+        if (dominanceTimer >= 5)
         {
             CurrentIdentityProperties.Dominance += 1;
-            if (TriggerWinLevel.levelWon == true)
-            {
-                CurrentIdentityProperties.Dominance += 50;
-                TriggerWinLevel.levelWon = false;
-            }
+            MaxDominance();
+            //triggering the most dominant identity
+            if (CurrentIdentityProperties.Dominance < DominantIdentityProperties.Dominance) TriggerIdentity(dominantState);
+
             dominanceTimer = 0;
         }
+        
+        //incrementing dominance of the current identity once it's won the level
+        if (TriggerWinLevel.levelWon == true)
+        {
+            CurrentIdentityProperties.Dominance += 50;
+            TriggerWinLevel.levelWon = false;
+        }
 
+        //passing the results of the current identity to the appropriate identity
         switch (state)
         {
             case IdentityState.Blue:
@@ -172,11 +184,48 @@ public class GameManager : MonoBehaviour
 
 >>>>>>> Finally getting back on track; Fixed logical mistake that didn't differentiate between identities. Implemented the beginnings of identity dominance, imputed also on the UI
 
+    //finding which identity has the max dominance
+    private int MaxDominance()
+    {
+        int[] allIdentitiesDominance = new int[3];
+        allIdentitiesDominance[0] = BlueProperties.Dominance;
+        allIdentitiesDominance[1] = TwoProperties.Dominance;
+        allIdentitiesDominance[2] = ThereProperties.Dominance;
+
+        for (int x = 0; x < 3; x++)
+        {
+            if (DominantIdentityProperties.Dominance <= allIdentitiesDominance[x])
+            {
+                switch (x)
+                {
+                    case 0:
+                        DominantIdentityProperties = BlueProperties;
+                        dominantState = 0;
+                        break;
+                    case 1:
+                        DominantIdentityProperties = TwoProperties;
+                        dominantState = 1;
+                        break;
+                    case 2:
+                        DominantIdentityProperties = ThereProperties;
+                        dominantState = 2;
+                        break;
+                }
+                //DominantIdentityProperties.Dominance = allIdentitiesDominance[x];
+            }
+        }
+
+        return DominantIdentityProperties.Dominance;
+    }
+
+
     private void OnGUI()
     {
         guiStyle.fontSize = 40;
         GUI.Label(new Rect(20, 20, 500, 80), currentIdentity.ToString(), guiStyle);
-        GUI.Label(new Rect(250, 20, 500, 80), CurrentIdentityProperties.Dominance.ToString(), guiStyle);
+        GUI.Label(new Rect(400, 20, 100, 80), "Dominance: ", guiStyle);
+        GUI.Label(new Rect(700, 20, 500, 80), CurrentIdentityProperties.Dominance.ToString(), guiStyle);
+        GUI.Label(new Rect(1000, 20, 500, 80), leveltimer.ToString(), guiStyle);
     }
 
 }
