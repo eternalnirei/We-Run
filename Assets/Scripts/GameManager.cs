@@ -150,7 +150,7 @@ public class GameManager : MonoBehaviour
         }
 
         //incrementing dominance + checking for identity change to the most dominant one
-        if (dominanceTimer >= 5)
+        if (dominanceTimer >= 3)
         {
             CurrentIdentityProperties.Dominance += 1;
             MaxDominance();
