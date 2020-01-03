@@ -34,11 +34,8 @@ public class GameManager : MonoBehaviour
     bool isInTransition;
 
     float timer;
-<<<<<<< HEAD
-=======
     float dominanceTimer;
->>>>>>> Finally getting back on track; Fixed logical mistake that didn't differentiate between identities. Implemented the beginnings of identity dominance, imputed also on the UI
-    public static float leveltimer;
+    float leveltimer;
     int dominantState;
 
     //Instantiating the identities
@@ -127,12 +124,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-<<<<<<< HEAD
+
     void Death(bool isAlive)
     {
         TriggerIdentity((int)startIdentity);
     }
-=======
+
+
     public void IdentityDominance(IdentityState state)
     {
         //getting the propetries of current identity
@@ -182,7 +180,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
->>>>>>> Finally getting back on track; Fixed logical mistake that didn't differentiate between identities. Implemented the beginnings of identity dominance, imputed also on the UI
 
     //finding which identity has the max dominance
     private int MaxDominance()
